@@ -1,0 +1,1 @@
+# crud-wishlist-scala-sqlite
