@@ -3,8 +3,8 @@ description: 'Generic build sbt with test coverage and sonar'
 
 inputs:
 #  sonar_token:
-#    description: 'Sonar token'
-#    required: true
+    description: 'Sonar token'
+    required: true
   github_token:
     description: 'github token'
     required: true
@@ -25,7 +25,11 @@ runs:
     - name: Compile
       shell: bash
       run: sbt test package
-
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #    - name: Build
 #      run: mvn -B install --file pom.xml
 #      shell: bash

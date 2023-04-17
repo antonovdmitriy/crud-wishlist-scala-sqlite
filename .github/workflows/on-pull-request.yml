@@ -15,5 +15,5 @@ jobs:
       - name: Generic build sbt with test coverage and sonar
         uses: ./.github/actions/generic-build-sbt-with-test-coverage-and-sonar/
         with:
-#          sonar_token: ${{ secrets.SONAR_TOKEN }}
+          sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
