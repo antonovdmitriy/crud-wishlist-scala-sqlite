@@ -24,7 +24,7 @@ runs:
         java-version: adopt@1.11
     - name: Compile
       shell: bash
-      run: sbt test package
+      run: sbt test package coverageReport
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
