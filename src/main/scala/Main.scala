@@ -46,9 +46,9 @@ object Main {
     }
 
     // Block until the server is shut down
-    StdIn.readLine() // let it run until user presses return
+    StdIn.readLine()
     bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when done
+      .flatMap(_.unbind())
+      .onComplete(_ => system.terminate())
   }
 }
