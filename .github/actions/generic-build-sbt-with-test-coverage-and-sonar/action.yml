@@ -24,7 +24,7 @@ runs:
         java-version: adopt@1.11
     - name: Compile
       shell: bash
-      run: sbt package
+      run: sbt test package
 
 #    - name: Build
 #      run: mvn -B install --file pom.xml
