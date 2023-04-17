@@ -18,42 +18,32 @@ class WishlistServiceSpec
 
   val route: Route = new WishlistController(new WishlistServiceImpl).route
 
-  "get all items from the wishlist" in {
-    val itemInput = WishlistItemInput(
-      "test item",
-      Some("test description"),
-      "test link",
-      Some(100.0)
-    )
-    val entity =
-      HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
-
-    // Add an item to the wishlist
-    Post("/wishlist", entity) ~> route ~> check {
-      status shouldBe StatusCodes.Created
-    }
-
-    // Get all items from the wishlist
-    Get("/wishlist") ~> route ~> check {
-      status shouldBe StatusCodes.OK
-      contentType shouldBe ContentTypes.`application/json`
-      val items = responseAs[Seq[WishlistItem]]
-      items should have size 1
-      items.head.name shouldBe itemInput.name
-      items.head.description shouldBe itemInput.description
-      items.head.linkToOrder shouldBe itemInput.linkToOrder
-      items.head.price shouldBe itemInput.price
-    }
-  }
-
   "WishlistService" should {
+    "get all items from the wishlist" in {
+      val itemInput: WishlistItemInput = buildValidWishListInputItem
+      val entity =
+        HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
+
+      // Add an item to the wishlist
+      Post("/wishlist", entity) ~> route ~> check {
+        status shouldBe StatusCodes.Created
+      }
+
+      // Get all items from the wishlist
+      Get("/wishlist") ~> route ~> check {
+        status shouldBe StatusCodes.OK
+        contentType shouldBe ContentTypes.`application/json`
+        val items = responseAs[Seq[WishlistItem]]
+        items should have size 1
+        items.head.name shouldBe itemInput.name
+        items.head.description shouldBe itemInput.description
+        items.head.linkToOrder shouldBe itemInput.linkToOrder
+        items.head.price shouldBe itemInput.price
+      }
+    }
+
     "add an item to the wishlist" in {
-      val itemInput = WishlistItemInput(
-        "test item",
-        Some("test description"),
-        "test link",
-        Some(100.0)
-      )
+      val itemInput: WishlistItemInput = buildValidWishListInputItem
       val entity =
         HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
@@ -69,12 +59,7 @@ class WishlistServiceSpec
     }
 
     "get an item from the wishlist" in {
-      val itemInput = WishlistItemInput(
-        "test item",
-        Some("test description"),
-        "test link",
-        Some(100.0)
-      )
+      val itemInput: WishlistItemInput = buildValidWishListInputItem
       val entity =
         HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
@@ -91,12 +76,7 @@ class WishlistServiceSpec
     }
 
     "update an item in the wishlist" in {
-      val itemInput = WishlistItemInput(
-        "test item",
-        Some("test description"),
-        "test link",
-        Some(100.0)
-      )
+      val itemInput: WishlistItemInput = buildValidWishListInputItem
       val entity =
         HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
@@ -127,12 +107,7 @@ class WishlistServiceSpec
     }
 
     "delete an item from the wishlist" in {
-      val itemInput = WishlistItemInput(
-        "test item",
-        Some("test description"),
-        "test link",
-        Some(100.0)
-      )
+      val itemInput: WishlistItemInput = buildValidWishListInputItem
       val entity =
         HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
@@ -147,5 +122,14 @@ class WishlistServiceSpec
         }
       }
     }
+  }
+
+  private def buildValidWishListInputItem = {
+    WishlistItemInput(
+      "test item",
+      Some("test description"),
+      "test link",
+      Some(100.0)
+    )
   }
 }
