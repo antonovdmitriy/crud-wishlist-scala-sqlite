@@ -52,6 +52,7 @@ object Main {
 //    }
 
     // Block until the server is shut down
+    println("before readline " + Instant.now() + " " + Thread.currentThread().getId)
     StdIn.readLine()
 
     bindingFuture
