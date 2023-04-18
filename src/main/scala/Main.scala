@@ -21,7 +21,7 @@ object Main {
 
     val route: Route = new WishlistController(wishlistService).route
 
-    val bindingFuture = Http().newServerAt("127.0.0.1", 8080).bind(route)
+    val bindingFuture = Http().newServerAt("127.0.0.1", 8089).bind(route)
 
     // Log the server startup message
     bindingFuture.foreach { binding =>

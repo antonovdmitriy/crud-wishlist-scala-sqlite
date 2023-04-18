@@ -23,7 +23,7 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       Thread.sleep(5000)
 
       // Send a GET request to /health endpoint
-      val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:8080/health"))
+      val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:8089/health"))
       val responseFuture = Http().singleRequest(request)
 
       // Await the response and check the status code
