@@ -1,4 +1,5 @@
 import akka.actor.CoordinatedShutdown
+import akka.actor.CoordinatedShutdown.UnknownReason
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
@@ -9,7 +10,7 @@ import com.example.wishlist.controller.WishlistController
 import com.example.wishlist.service.WishlistServiceImpl
 
 import java.time.Instant
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, ExecutionContext}
 import scala.io.StdIn
 
@@ -50,23 +51,35 @@ object Main {
 //      println("Server is shutting down...")
 //    }
 
-    // Block until the server is shut down
-    println(
-      "before readline " + Instant.now() + " " + Thread.currentThread().getId
-    )
-    StdIn.readLine()
+//    // Block until the server is shut down
+//    println(
+//      "before readline " + Instant.now() + " " + Thread.currentThread().getId
+//    )
+//    StdIn.readLine()
+//
+//    println(
+//      "after readline " + Instant.now() + " " + Thread.currentThread().getId
+//    )
+//
+//    bindingFuture
+//      .flatMap(_.unbind())
+//      .onComplete(_ => {
+//        println(
+//          "before terminate " + Instant.now() + " " + Thread.currentThread().getId
+//        )
+//        system.terminate()
+//      })
+    // Register a JVM shutdown hook for coordinated shutdown
+    CoordinatedShutdown(system).addJvmShutdownHook {
+      println("Server is shutting down...")
+      bindingFuture
+        .flatMap(_.unbind())
+        .onComplete { _ =>
+          system.terminate()
+        }
+    }
 
-    println(
-      "after readline " + Instant.now() + " " + Thread.currentThread().getId
-    )
-
-    bindingFuture
-      .flatMap(_.unbind())
-      .onComplete(_ => {
-        println(
-          "before terminate " + Instant.now() + " " + Thread.currentThread().getId
-        )
-        system.terminate()
-      })
+    // Block until a shutdown signal is received
+    Await.result(system.whenTerminated, Duration.Inf)
   }
 }

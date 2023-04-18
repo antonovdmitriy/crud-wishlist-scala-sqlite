@@ -7,7 +7,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.time.Instant
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.DurationInt
 
 class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
@@ -28,40 +28,40 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
 
     "start the app" in {
 
-      val thread = new Thread(() => Main.main(Array.empty))
-      thread.start()
-      Thread.sleep(1000) // Wait for server to start
-
-            println(
-              "before http request from test " + Instant
-                .now() + " " + Thread.currentThread().getId
-            )
-
-            // Send a GET request to /health endpoint
-            val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
-            val responseFuture = Http().singleRequest(request)
-
-            // Await the response and check the status code
-            val response = Await.result(responseFuture, 5.seconds)
-
-            println(
-              "after http request from test " + Instant
-                .now() + " " + Thread.currentThread().getId
-            )
-
-      // Stop the server
-      thread.interrupt()
-      thread.join(5000) // Wait for server to stop
-
-      response.status shouldBe OK
-
+//      val thread = new Thread(() => Main.main(Array.empty))
+//      thread.start()
+//      Thread.sleep(1000) // Wait for server to start
 //
-//      val f = Future {
-//        Main.main(Array.empty)
-//      }
+//            println(
+//              "before http request from test " + Instant
+//                .now() + " " + Thread.currentThread().getId
+//            )
 //
-//      // Wait for some time for the server to start up
+//            // Send a GET request to /health endpoint
+//            val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
+//            val responseFuture = Http().singleRequest(request)
 //
+//            // Await the response and check the status code
+//            val response = Await.result(responseFuture, 5.seconds)
+//
+//            println(
+//              "after http request from test " + Instant
+//                .now() + " " + Thread.currentThread().getId
+//            )
+//
+//      // Stop the server
+//      thread.interrupt()
+//      thread.join(5000) // Wait for server to stop
+//
+//      response.status shouldBe OK
+
+
+      val f = Future {
+        Main.main(Array.empty)
+      }
+
+      // Wait for some time for the server to start up
+
 //      println(
 //        "before sleep " + Instant.now() + " " + Thread.currentThread().getId
 //      )
@@ -71,25 +71,25 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
 //      println(
 //        "after sleep " + Instant.now() + " " + Thread.currentThread().getId
 //      )
-//
-//      println(
-//        "before http request from test " + Instant
-//          .now() + " " + Thread.currentThread().getId
-//      )
-//
-//      // Send a GET request to /health endpoint
-//      val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
-//      val responseFuture = Http().singleRequest(request)
-//
-//      // Await the response and check the status code
-//      val response = Await.result(responseFuture, 5.seconds)
-//
-//      println(
-//        "after http request from test " + Instant
-//          .now() + " " + Thread.currentThread().getId
-//      )
-//
-//      response.status shouldBe OK
+
+      println(
+        "before http request from test " + Instant
+          .now() + " " + Thread.currentThread().getId
+      )
+
+      // Send a GET request to /health endpoint
+      val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
+      val responseFuture = Http().singleRequest(request)
+
+      // Await the response and check the status code
+      val response = Await.result(responseFuture, 5.seconds)
+
+      println(
+        "after http request from test " + Instant
+          .now() + " " + Thread.currentThread().getId
+      )
+
+      response.status shouldBe OK
 
     }
 
