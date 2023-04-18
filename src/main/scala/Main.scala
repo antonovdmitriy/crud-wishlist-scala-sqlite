@@ -25,6 +25,7 @@ object Main {
 
     val route: Route = new WishlistController(wishlistService).route
 
+
     val bindingFuture = Http().newServerAt("127.0.0.1", 3000).bind(route)
 
     // Log the server startup message
