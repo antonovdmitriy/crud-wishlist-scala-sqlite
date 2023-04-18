@@ -18,7 +18,7 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
         Main.main(Array.empty)
       }
 
-      val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:8080/health"))
+      val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
       val responseFuture = Http().singleRequest(request)
 
       val response = Await.result(responseFuture, 5.seconds)
