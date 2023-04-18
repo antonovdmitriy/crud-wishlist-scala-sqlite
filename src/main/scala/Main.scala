@@ -41,9 +41,9 @@ object Main {
     val responseFuture = Http().singleRequest(request)
     println(Await.result(responseFuture, 5.seconds))
 
-    CoordinatedShutdown(system).addJvmShutdownHook {
-      println("Server is shutting down...")
-    }
+//    CoordinatedShutdown(system).addJvmShutdownHook {
+//      println("Server is shutting down...")
+//    }
 
     // Block until the server is shut down
     StdIn.readLine()
