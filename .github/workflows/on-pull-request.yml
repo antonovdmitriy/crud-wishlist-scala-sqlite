@@ -8,6 +8,7 @@ on:
 jobs:
   build-with-test-coverage-and-sonar:
     runs-on: ubuntu-latest
+    container: ubuntu
     permissions:
       security-events: write
     steps:
