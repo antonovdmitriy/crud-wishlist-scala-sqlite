@@ -29,6 +29,7 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       // Await the response and check the status code
       val response = Await.result(responseFuture, 5.seconds)
       response.status shouldBe OK
+
     }
 
   }
