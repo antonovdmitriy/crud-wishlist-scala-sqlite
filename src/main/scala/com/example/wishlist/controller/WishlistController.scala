@@ -44,5 +44,9 @@ class WishlistController(wishlistService: WishlistService) {
             }
           }
       }
+  } ~ pathPrefix("health") {
+    get {
+      complete(StatusCodes.OK)
+    }
   }
 }

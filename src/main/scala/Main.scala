@@ -1,8 +1,6 @@
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
-import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.example.wishlist.controller.WishlistController
 import com.example.wishlist.service.WishlistServiceImpl
@@ -23,20 +21,7 @@ object Main {
 
     val route: Route = new WishlistController(wishlistService).route
 
-    val routeHello =
-      path("hello") {
-        get {
-          complete(
-            HttpEntity(
-              ContentTypes.`text/html(UTF-8)`,
-              "<h1>Say hello to akka-http</h1>"
-            )
-          )
-        }
-      }
-
-    val bindingFuture =
-      Http().newServerAt("localhost", 8080).bind(route ~ routeHello)
+    val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
 
     // Log the server startup message
     bindingFuture.foreach { binding =>
