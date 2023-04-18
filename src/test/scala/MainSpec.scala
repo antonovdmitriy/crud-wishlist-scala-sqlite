@@ -22,8 +22,8 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       // Wait for some time for the server to start up
       Thread.sleep(1000)
 
-      // Send a GET request to /health endpoint on localhost:8080
-      val request = HttpRequest(GET, uri = Uri("http://localhost:8080/health"))
+      // Send a GET request to /health endpoint
+      val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:8080/health"))
       val responseFuture = Http().singleRequest(request)
 
       // Await the response and check the status code
