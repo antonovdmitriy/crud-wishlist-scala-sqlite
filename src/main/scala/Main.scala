@@ -35,7 +35,7 @@ object Main {
       )
     }
 
-//    Thread.sleep(5000)
+    Thread.sleep(5000)
 
 
     // Send a GET request to /health endpoint
