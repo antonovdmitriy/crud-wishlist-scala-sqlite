@@ -46,6 +46,7 @@ object Main {
 
     // Block until the server is shut down
     StdIn.readLine()
+
     bindingFuture
       .flatMap(_.unbind())
       .onComplete(_ => system.terminate())
