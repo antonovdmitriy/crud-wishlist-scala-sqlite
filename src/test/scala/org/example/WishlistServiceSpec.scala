@@ -12,7 +12,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import spray.json._
 
-@Ignore
 class WishlistServiceSpec
     extends AnyWordSpec
     with Matchers
