@@ -21,11 +21,21 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       }
 
       // Wait for some time for the server to start up
-//      Thread.sleep(5000)
 
+      println(
+        "before sleep " + Instant.now() + " " + Thread.currentThread().getId
+      )
 
-      println("before http request from test " + Instant.now() + " " + Thread.currentThread().getId)
+      Thread.sleep(5000)
 
+      println(
+        "after sleep " + Instant.now() + " " + Thread.currentThread().getId
+      )
+
+      println(
+        "before http request from test " + Instant
+          .now() + " " + Thread.currentThread().getId
+      )
 
       // Send a GET request to /health endpoint
       val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
@@ -34,9 +44,10 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       // Await the response and check the status code
       val response = Await.result(responseFuture, 5.seconds)
 
-
-      println("after http request from test " + Instant.now() + " " + Thread.currentThread().getId)
-
+      println(
+        "after http request from test " + Instant
+          .now() + " " + Thread.currentThread().getId
+      )
 
       response.status shouldBe OK
 

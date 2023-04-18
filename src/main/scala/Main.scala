@@ -36,11 +36,11 @@ object Main {
       )
     }
 
-    println("before sleep " + Instant.now() + " " + Thread.currentThread().getId)
-
-    Thread.sleep(5000)
-
-    println("after sleep " + Instant.now() + " " + Thread.currentThread().getId)
+//    println("before sleep " + Instant.now() + " " + Thread.currentThread().getId)
+//
+//    Thread.sleep(5000)
+//
+//    println("after sleep " + Instant.now() + " " + Thread.currentThread().getId)
 
     // Send a GET request to /health endpoint
 //    val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
