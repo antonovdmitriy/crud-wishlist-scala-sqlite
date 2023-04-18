@@ -37,9 +37,9 @@ object Main {
 
 
     // Send a GET request to /health endpoint
-    val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
-    val responseFuture = Http().singleRequest(request)
-    println(Await.result(responseFuture, 5.seconds))
+//    val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
+//    val responseFuture = Http().singleRequest(request)
+//    println(Await.result(responseFuture, 5.seconds))
 
 //    CoordinatedShutdown(system).addJvmShutdownHook {
 //      println("Server is shutting down...")
