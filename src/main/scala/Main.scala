@@ -1,42 +1,24 @@
+import akka.actor.CoordinatedShutdown
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
-import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.example.wishlist.controller.WishlistController
 import com.example.wishlist.service.WishlistServiceImpl
 
-import scala.concurrent.ExecutionContext
-import scala.io.StdIn
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 
 object Main {
   def main(args: Array[String]): Unit = {
     // Instantiate dependencies
     val wishlistService = new WishlistServiceImpl
-
-    // needed to run the route
-    implicit val system: ActorSystem[_] =
-      ActorSystem(Behaviors.empty, "wishlist-system")
-    // needed for the future flatMap/onComplete in the end
-    implicit val executionContext: ExecutionContext = system.executionContext
-
     val route: Route = new WishlistController(wishlistService).route
 
-    val routeHello =
-      path("hello") {
-        get {
-          complete(
-            HttpEntity(
-              ContentTypes.`text/html(UTF-8)`,
-              "<h1>Say hello to akka-http</h1>"
-            )
-          )
-        }
-      }
-
-    val bindingFuture =
-      Http().newServerAt("localhost", 8080).bind(route ~ routeHello)
+    implicit val system: ActorSystem[_] =
+      ActorSystem(Behaviors.empty, "wishlist-system")
+    implicit val executionContext: ExecutionContext = system.executionContext
+    val bindingFuture = Http().newServerAt("127.0.0.1", 3000).bind(route)
 
     // Log the server startup message
     bindingFuture.foreach { binding =>
@@ -45,10 +27,17 @@ object Main {
       )
     }
 
-    // Block until the server is shut down
-    StdIn.readLine()
-    bindingFuture
-      .flatMap(_.unbind())
-      .onComplete(_ => system.terminate())
+    // Register a JVM shutdown hook for coordinated shutdown
+    CoordinatedShutdown(system).addJvmShutdownHook {
+      println("Server is shutting down...")
+      bindingFuture
+        .flatMap(_.unbind())
+        .onComplete { _ =>
+          system.terminate()
+        }
+    }
+
+    // Block until a shutdown signal is received
+    Await.result(system.whenTerminated, Duration.Inf)
   }
 }
