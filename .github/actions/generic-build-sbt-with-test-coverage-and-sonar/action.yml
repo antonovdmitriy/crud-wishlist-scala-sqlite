@@ -1,3 +1,4 @@
+---
 name: Generic build sbt with test coverage and sonar
 description: 'Generic build sbt with test coverage and sonar'
 
@@ -36,8 +37,6 @@ runs:
 #        SONAR_TOKEN: ${{ inputs.sonar_token }}
 
 # https://github.com/marketplace/actions/sonarcloud-scoverage-fix
-
-
 
     - name: SonarCloud scan fixed
       uses: pervasive-cats/sonarcloud-scoverage-fix@v1.0.0

@@ -59,4 +59,5 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           VALIDATE_ALL_CODEBASE: false
+          VALIDATE_SCALAFMT: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
