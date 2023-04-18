@@ -7,6 +7,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.time.SpanSugar.convertIntToGrainOfTime
 import org.scalatest.wordspec.AnyWordSpec
 
+import java.time.Instant
 import scala.concurrent.{Await, Future}
 
 class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
@@ -22,12 +23,21 @@ class MainSpec extends AnyWordSpec with Matchers with ScalatestRouteTest {
       // Wait for some time for the server to start up
 //      Thread.sleep(5000)
 
+
+      println("before http request from test " + Instant.now() + " " + Thread.currentThread().getId)
+
+
       // Send a GET request to /health endpoint
       val request = HttpRequest(GET, uri = Uri("http://127.0.0.1:3000/health"))
       val responseFuture = Http().singleRequest(request)
 
       // Await the response and check the status code
       val response = Await.result(responseFuture, 5.seconds)
+
+
+      println("after http request from test " + Instant.now() + " " + Thread.currentThread().getId)
+
+
       response.status shouldBe OK
 
     }
