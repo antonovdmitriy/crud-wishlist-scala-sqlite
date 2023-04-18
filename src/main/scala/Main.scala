@@ -1,3 +1,4 @@
+import akka.actor.CoordinatedShutdown
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
@@ -28,6 +29,10 @@ object Main {
       println(
         s"Server online at http://${binding.localAddress.getHostString}:${binding.localAddress.getPort}/"
       )
+    }
+
+    CoordinatedShutdown(system).addJvmShutdownHook {
+      println("Server is shutting down...")
     }
 
     // Block until the server is shut down
