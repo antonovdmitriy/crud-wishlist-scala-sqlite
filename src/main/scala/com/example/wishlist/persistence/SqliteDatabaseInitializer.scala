@@ -2,6 +2,7 @@ package com.example.wishlist.persistence
 
 import com.typesafe.config.Config
 
+import java.sql.SQLException
 import javax.sql.DataSource
 import scala.util.Using
 
@@ -19,7 +20,7 @@ class SqliteDatabaseInitializer extends DatabaseInitializer {
         try {
           statement.execute(ddl)
         }catch {
-          case ex: Exception =>
+          case ex: SQLException =>
             ex.printStackTrace()
         }
       }

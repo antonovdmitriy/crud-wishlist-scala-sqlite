@@ -14,7 +14,7 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
     var resultSet: ResultSet         = null
     try {
       connection = dataSource.getConnection()
-      statement = connection.prepareStatement("SELECT * FROM wishlist")
+      statement = connection.prepareStatement("SELECT id, name, description, price, link_to_order FROM wishlist")
       resultSet = statement.executeQuery()
       resultSetToList(resultSet)
     } finally {
@@ -28,7 +28,7 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
     var resultSet: ResultSet         = null
     try {
       connection = dataSource.getConnection()
-      statement = connection.prepareStatement("SELECT * FROM wishlist WHERE id = ?")
+      statement = connection.prepareStatement("SELECT id, name, description, price, link_to_order FROM wishlist WHERE id = ?")
       statement.setInt(1, id)
       resultSet = statement.executeQuery()
       resultSetToList(resultSet).headOption
