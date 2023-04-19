@@ -21,4 +21,7 @@ libraryDependencies ++= Seq(
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"
 
+libraryDependencies += "org.xerial" % "sqlite-jdbc" % "3.41.2.1"
+libraryDependencies += "com.zaxxer" % "HikariCP" % "5.0.1"
+
 coverageEnabled := true
