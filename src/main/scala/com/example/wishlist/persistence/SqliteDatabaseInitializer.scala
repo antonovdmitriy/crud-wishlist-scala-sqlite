@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 
 import java.sql.SQLException
 import javax.sql.DataSource
-import scala.util.Using
+import scala.util.{Try, Using}
 
 class SqliteDatabaseInitializer extends DatabaseInitializer {
   override def createTablesIfDoNotExist(
@@ -17,9 +17,9 @@ class SqliteDatabaseInitializer extends DatabaseInitializer {
 
     Using(dataSource.getConnection) { conn =>
       Using(conn.createStatement()) { statement =>
-        try {
+        Try {
           statement.execute(ddl)
-        }catch {
+        } recover {
           case ex: SQLException =>
             ex.printStackTrace()
         }
