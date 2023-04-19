@@ -44,10 +44,13 @@ class WishlistServiceImpl extends WishlistService {
     }
   }
 
-  override def deleteItem(id: Int): Option[WishlistItem] = {
-    val item = items.find(_.id == id)
-    items -= item.getOrElse(return None)
-    item
+  override def deleteItem(id: Int): Int = {
+    items.find(_.id == id) match {
+      case Some(item) =>
+        items -= item
+        1
+      case None => 0
+    }
   }
 
 }

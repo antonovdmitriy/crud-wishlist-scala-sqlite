@@ -1,4 +1,4 @@
-package org.example
+package org.example.wishlist.persistence
 
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.Route
@@ -6,24 +6,22 @@ import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.example.wishlist.controller.WishlistController
 import com.example.wishlist.model.WishlistJsonProtocol._
 import com.example.wishlist.model.{WishlistItem, WishlistItemInput}
-import com.example.wishlist.service.WishlistServiceImpl
-import org.scalatest.Ignore
+import com.example.wishlist.service.WishlistService
+import org.scalatest.concurrent.ScalaFutures.convertScalaFuture
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.time.SpanSugar.convertIntToGrainOfTime
 import org.scalatest.wordspec.AnyWordSpec
 import spray.json._
 
-class WishlistServiceSpec
-    extends AnyWordSpec
-    with Matchers
-    with ScalatestRouteTest {
+trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRouteTest {
 
-  val route: Route = new WishlistController(new WishlistServiceImpl).route
+  def wishlistService: WishlistService // Abstract method to be implemented in the child classes
+  val route: Route = new WishlistController(wishlistService).route
 
   "WishlistService" should {
     "get all items from the wishlist" in {
       val itemInput: WishlistItemInput = buildValidWishListInputItem
-      val entity =
-        HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
+      val entity                       = HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
       // Add an item to the wishlist
       Post("/wishlist", entity) ~> route ~> check {
@@ -109,17 +107,14 @@ class WishlistServiceSpec
 
     "delete an item from the wishlist" in {
       val itemInput: WishlistItemInput = buildValidWishListInputItem
-      val entity =
-        HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
+      val entity                       = HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
       Post("/wishlist", entity) ~> route ~> check {
         val responseItem = responseAs[WishlistItem]
 
         Delete(s"/wishlist/${responseItem.id}") ~> route ~> check {
           status shouldBe StatusCodes.OK
-          contentType shouldBe ContentTypes.`application/json`
-          val deletedItem = responseAs[WishlistItem]
-          deletedItem shouldBe responseItem
+          responseEntity.toStrict(2.seconds).map(_.data.utf8String).futureValue shouldBe "1"
         }
       }
     }
