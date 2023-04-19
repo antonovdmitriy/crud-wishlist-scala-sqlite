@@ -16,7 +16,12 @@ class SqliteDatabaseInitializer extends DatabaseInitializer {
 
     Using(dataSource.getConnection) { conn =>
       Using(conn.createStatement()) { statement =>
-        statement.execute(ddl)
+        try {
+          statement.execute(ddl)
+        }catch {
+          case ex: Exception =>
+            ex.printStackTrace()
+        }
       }
     }
   }

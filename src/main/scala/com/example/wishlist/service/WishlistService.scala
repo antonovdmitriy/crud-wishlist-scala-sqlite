@@ -11,5 +11,5 @@ trait WishlistService {
 
   def updateItem(id: Int, itemInput: WishlistItemInput): Option[WishlistItem]
 
-  def deleteItem(id: Int): Option[WishlistItem]
+  def deleteItem(id: Int): Int
 }

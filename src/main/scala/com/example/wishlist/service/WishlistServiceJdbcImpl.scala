@@ -41,7 +41,7 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
     val connection = dataSource.getConnection()
     val preparedStatement = connection.prepareStatement(
       """
-        |INSERT INTO wishlist_items (name, description, price, link_to_order)
+        |INSERT INTO wishlist (name, description, price, link_to_order)
         |VALUES (?, ?, ?, ?)
     """.stripMargin,
       Statement.RETURN_GENERATED_KEYS // Specify that you want to retrieve the generated keys
@@ -50,10 +50,7 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
     try {
       preparedStatement.setString(1, itemInput.name)
       preparedStatement.setString(2, itemInput.description.orNull)
-      preparedStatement.setBigDecimal(
-        3,
-        itemInput.price.map(_.bigDecimal).orNull
-      )
+      preparedStatement.setBigDecimal(3, itemInput.price.map(_.bigDecimal).orNull)
       preparedStatement.setString(4, itemInput.linkToOrder)
 
       preparedStatement.executeUpdate()
@@ -84,9 +81,8 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
     var statement: PreparedStatement = null
     try {
       connection = dataSource.getConnection()
-      statement = connection.prepareStatement(
-        "UPDATE wishlist SET name = ?, price = ? WHERE id = ?"
-      )
+      statement =
+        connection.prepareStatement("UPDATE wishlist SET name = ?, price = ? WHERE id = ?")
       statement.setString(1, itemInput.name)
       statement.setBigDecimal(2, itemInput.price.map(_.bigDecimal).orNull)
       statement.setInt(3, id)
@@ -109,19 +105,14 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
     }
   }
 
-  override def deleteItem(id: Int): Option[WishlistItem] = {
+  override def deleteItem(id: Int): Int = {
     var connection: Connection       = null
     var statement: PreparedStatement = null
     try {
       connection = dataSource.getConnection()
       statement = connection.prepareStatement("DELETE FROM wishlist WHERE id = ?")
       statement.setInt(1, id)
-      val deletedRows = statement.executeUpdate()
-      if (deletedRows > 0) {
-        None // Return None, as no item is being returned after deletion
-      } else {
-        None
-      }
+      statement.executeUpdate()
     } finally {
       closeResources(connection, statement, null)
     }
