@@ -1,3 +1,5 @@
+package com.example.wishlist
+
 import akka.actor.CoordinatedShutdown
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
@@ -12,7 +14,7 @@ import javax.sql.DataSource
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
 
-object Main {
+object App {
 
   def main(args: Array[String]): Unit = {
 

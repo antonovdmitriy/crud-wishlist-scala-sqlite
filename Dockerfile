@@ -1,0 +1,5 @@
+FROM openjdk:11
+WORKDIR /app
+COPY crud-wishlist-scala-sqlite-assembly-0.1.0-SNAPSHOT.jar  .
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","crud-wishlist-scala-sqlite-assembly-0.1.0-SNAPSHOT.jar"]
