@@ -25,4 +25,6 @@ jobs:
           TARGET: "/home/ubuntu/wishlist"
           SCRIPT_AFTER: |
             cd /home/ubuntu/wishlist
-            ls
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
