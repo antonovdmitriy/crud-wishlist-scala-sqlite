@@ -6,12 +6,12 @@ on:
     branches:
       - '13-docker-compose-file'
 
-  jobs:
-    test:
-      runs-on: ubuntu-latest
-      permissions:
-        security-events: write
-        contents: read
-        packages: write
-      steps:
-        - uses: actions/checkout@v3
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
