@@ -24,3 +24,19 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           context: .
           image_name: wishlist-scala-akka-sqlite
+      - name: Update Docker Compose file with release tag
+        run: |
+          sed -i "s/:latest/:${{ github.event.release.tag_name }}/" ./compose/release-compose.yml
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          SOURCE: "./compose/"
+          REMOTE_HOST: ${{ secrets.EC2_REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
+          TARGET: "/home/ubuntu/wishlist"
+          SCRIPT_AFTER: |
+            cd /home/ubuntu/wishlist
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
