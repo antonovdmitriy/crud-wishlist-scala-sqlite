@@ -18,6 +18,8 @@ object App {
 
   def main(args: Array[String]): Unit = {
 
+    println("Hello world")
+
     val config                               = ConfigFactory.load()
     val dataSourceBuilder: DataSourceBuilder = new HikariCPDataSourceBuilder
     val dataSource: DataSource               = dataSourceBuilder.configureDataSource(config)

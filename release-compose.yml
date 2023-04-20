@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  app:
+    image: ghcr.io/antonovdmitriy/crud-wishlist-scala-sqlite/wishlist-scala-akka-sqlite:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /app/data

@@ -1,0 +1,17 @@
+---
+name: test compose to ec2
+
+on:
+  push:
+    branches:
+      - '13-docker-compose-file'
+
+  jobs:
+    build-with-test-coverage-and-sonar:
+      runs-on: ubuntu-latest
+      permissions:
+        security-events: write
+        contents: read
+        packages: write
+      steps:
+        - uses: actions/checkout@v3
