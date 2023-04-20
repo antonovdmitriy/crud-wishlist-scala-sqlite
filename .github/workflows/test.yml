@@ -19,7 +19,10 @@ jobs:
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-          SOURCE: "./compose"
+          SOURCE: "./compose/"
           REMOTE_HOST: ${{ secrets.EC2_REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
           TARGET: "/home/ubuntu/wishlist"
+          SCRIPT_AFTER: |
+            cd /home/ubuntu/wishlist
+            ls
