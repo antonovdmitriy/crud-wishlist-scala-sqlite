@@ -15,3 +15,11 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v3
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          SOURCE: "./compose"
+          REMOTE_HOST: ${{ secrets.EC2_REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_REMOTE_USER }}
+          TARGET: "/home/ubuntu/wishlist"
