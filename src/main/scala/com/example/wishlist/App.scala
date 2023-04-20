@@ -30,6 +30,7 @@ object App {
     dbInitializer.createTablesIfDoNotExist(dataSource, config)
 
     startHttpServer(route, config)
+
   }
 
   private def startHttpServer(route: Route, config: Config): Unit = {
