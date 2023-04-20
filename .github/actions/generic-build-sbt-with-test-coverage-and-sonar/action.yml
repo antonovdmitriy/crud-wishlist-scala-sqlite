@@ -19,10 +19,10 @@ runs:
 #      with:
 #        java-version: 11
 #        distribution: 'corretto'
-    - name: Setup packages
-      run: |
-        apt-get update; apt-get install -y curl
-      shell: bash
+#    - name: Setup packages
+#      run: |
+#        apt-get update; apt-get install -y curl
+#      shell: bash
     - name: Set up SBT
       uses: olafurpg/setup-scala@v10
       with:
