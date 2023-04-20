@@ -1,15 +1,12 @@
----
-name: on merge to main
+name: On new release
 
 on:
-  push:
-    branches:
-      - 'main'
-  workflow_dispatch:
+  release:
+    types: [created]
 
 jobs:
-  build-with-test-coverage-and-sonar:
-    runs-on: ubuntu-latest
+  build-and-push-image-to-registry:
+    runs-on: ubuntu-18.04
     permissions:
       security-events: write
       contents: read
@@ -21,7 +18,7 @@ jobs:
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create docker image and push to registry
+      - name: Create docker release image and push to registry
         uses: ./.github/actions/build-image-and-push-to-registry/
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
