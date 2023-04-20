@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wishlist</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: vertical;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Wishlist</h1>
+<button onclick="addItem()">Add Item</button>
+<button onclick="editItem()">Edit Item</button>
+<button onclick="deleteItem()">Delete Item</button>
+<button onclick="refreshItem()">Refresh Item</button>
+<table id="wishlistTable">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Item 1</td>
+        <td>$100</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Item 2</td>
+        <td>$200</td>
+    </tr>
+    <!-- Add more rows as needed -->
+</table>
+<textarea id="linkToOrder" placeholder="Link to Order"></textarea>
+<textarea id="description" placeholder="Description"></textarea>
+
+<script>
+ const apiUrl = "http://localhost:8080/wishlist";
+
+        function addItem() {
+            // Add logic for adding an item here
+            alert("Add Item button clicked.");
+        }
+
+        function editItem() {
+            // Add logic for editing an item here
+            alert("Edit Item button clicked.");
+        }
+
+        function deleteItem() {
+            // Add logic for deleting an item here
+            alert("Delete Item button clicked.");
+        }
+
+function refreshItem() {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Update table
+            const table = document.getElementById("wishlistTable");
+            table.innerHTML = `
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            `;
+            data.forEach(item => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                `;
+                table.appendChild(row);
+            });
+
+            // Update text areas
+            const linkToOrderTextArea = document.getElementById("linkToOrder");
+            const descriptionTextArea = document.getElementById("description");
+            if (data.length > 0) {
+                linkToOrderTextArea.value = data[0].linkToOrder;
+                descriptionTextArea.value = data[0].description || "";
+            } else {
+                linkToOrderTextArea.value = "";
+                descriptionTextArea.value = "";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching wishlist items:", error);
+        });
+}
+
+
+</script>
+</body>
+</html>
