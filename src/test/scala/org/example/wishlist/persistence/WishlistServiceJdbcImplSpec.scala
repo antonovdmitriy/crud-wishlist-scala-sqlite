@@ -28,7 +28,6 @@ class WishlistServiceJdbcImplSpec extends WishlistServiceSpecBase {
 
   override def afterAll(): Unit = {
     super.afterAll()
-
     val dbFile: File = new File(config.getString("db.dbPath"))
     if (dbFile.exists()) {
       dbFile.delete()

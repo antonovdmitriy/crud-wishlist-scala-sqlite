@@ -27,9 +27,9 @@ runs:
       uses: olafurpg/setup-scala@v10
       with:
         java-version: adopt@1.11
-    - name: Compile
+    - name: Run tests and build coverage report
       shell: bash
-      run: sbt test package coverageReport
+      run: sbt coverage test coverageReport
 #    - name: SonarCloud Scan
 #      uses: SonarSource/sonarcloud-github-action@master
 #      env:
@@ -46,6 +46,9 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         SONAR_TOKEN: ${{ inputs.sonar_token }}
 
+    - name: Build jar
+      shell: bash
+      run: sbt clean compile assembly
 #    - name: Build
 #      run: mvn -B install --file pom.xml
 #      shell: bash
