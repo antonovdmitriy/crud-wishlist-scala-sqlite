@@ -32,7 +32,7 @@ class WishlistController(wishlistService: WishlistService) {
   val route: Route =
     cors() {
       handleErrors {
-        pathPrefix("wishlist") {po
+        pathPrefix("wishlist") {
           pathEndOrSingleSlash {
             get {
               val items = wishlistService.getAllItems

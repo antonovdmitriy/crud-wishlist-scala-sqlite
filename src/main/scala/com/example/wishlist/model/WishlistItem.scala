@@ -1,6 +1,6 @@
 package com.example.wishlist.model
 
-case class namdeplinWishlistItem(
+case class WishlistItem(
     id: Int,
     name: String,
     description: Option[String],

@@ -4,7 +4,20 @@ services:
   app:
     image: wishlist:latest
     build: .
+    networks:
+      - backend
+    expose:
+      - "8080"
+
+  nginx:
+    image: wishlist-static:latest
+    build: ./static/
     ports:
-      - "8080:8080"
-    volumes:
-      - /app/data
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - backend
+
+networks:
+  backend:

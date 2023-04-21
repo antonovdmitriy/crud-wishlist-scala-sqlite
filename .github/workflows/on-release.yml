@@ -18,15 +18,21 @@ jobs:
         with:
           sonar_token: ${{ secrets.SONAR_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create docker release image and push to a registry
+      - name: Create docker release backend image and push to a registry
         uses: ./.github/actions/build-image-and-push-to-registry/
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           context: .
           image_name: wishlist-scala-akka-sqlite
+      - name: Create docker release image frontend and push to registry
+        uses: ./.github/actions/build-image-and-push-to-registry/
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          context: ./static
+          image_name: wishlist-front-static
       - name: Update Docker Compose file with release tag
         run: |
-          sed -i "s/:latest/:${{ github.event.release.tag_name }}/" ./compose/release-compose.yml
+          sed -i "s/:latest/:${{ github.event.release.tag_name }}/g" ./compose/release-compose.yml
       - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@main
         env:
