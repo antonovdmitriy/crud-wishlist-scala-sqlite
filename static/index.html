@@ -3,35 +3,150 @@
 <head>
     <title>Wishlist</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+      :root {
+  --primary-color: #8bc34a;
+  --secondary-color: #9e9e9e;
+  --background-color: #181818;
+  --text-color: #eee;
+}
 
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-        th {
-            background-color: #f2f2f2;
-        }
+/* Styles for table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
-        textarea {
-            width: 100%;
-            height: 100px;
-            resize: vertical;
-        }
+th,
+td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: left;
+}
 
+th {
+  background-color: #444;
+}
+
+td.selected {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+/* Styles for text areas */
+textarea {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #333;
+  color: var(--text-color);
+  border: 1px solid #555;
+}
+
+/* Styles for modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #333;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #555;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
+
+.modal input[type="text"],
+.modal textarea {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color: #555;
+  color: var(--text-color);
+  border: none;
+}
+
+.modal button {
+  padding: 14px 20px;
+  margin: 8px 0;
+  background-color: #555;
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+}
+
+.close {
+  color: var(--primary-color);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: var(--text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Styles for buttons */
+button {
+  background-color: #8bc34a;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #444;
+  color: var(--text-color);
+}
+
+.addButton {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-right: 10px;
+}
+
+.selected {
+  background-color: #333;
+  color: #fff;
+}
     </style>
+       
 </head>
+
 <body>
 <h1>Wishlist</h1>
-<button onclick="addItem()">Add Item</button>
-<button onclick="editItem()">Edit Item</button>
-<button onclick="deleteItem()">Delete Item</button>
-<button onclick="refreshItem()">Refresh Item</button>
+<button id="addItemBtn">Add Item</button>
+<button id="editItemBtn">Edit Item</button>
+<button id="deleteItemBtn">Delete Item</button>
+<button id="refreshItemBtn">Refresh Items</button>
 <table id="wishlistTable">
     <tr>
         <th>Id</th>
@@ -53,28 +168,101 @@
 <textarea id="linkToOrder" placeholder="Link to Order"></textarea>
 <textarea id="description" placeholder="Description"></textarea>
 
+<!-- Modal window for adding item -->
+<div id="addItemModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add Item</h2>
+        <form id="addItemForm">
+            <label for="itemName">Name:</label>
+            <input type="text" id="itemName" required><br>
+            <label for="itemPrice">Price:</label>
+            <input type="text" id="itemPrice" required><br>
+            <label for="itemLinkToOrder">Link to Order:</label>
+            <textarea id="itemLinkToOrder"></textarea><br>
+            <label for="itemDescription">Description:</label>
+            <textarea id="itemDescription"></textarea><br>
+            <button type="submit">OK</button>
+            <button type="button" id="cancelAddItemBtn">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
 <script>
  const apiUrl = "http://localhost:8080/wishlist";
 
-        function addItem() {
-            // Add logic for adding an item here
-            alert("Add Item button clicked.");
-        }
+  const table = document.getElementById('wishlistTable');
+    const addItemBtn = document.getElementById('addItemBtn');
+    const addItemModal = document.getElementById('addItemModal');
+    const cancelAddItemBtn = document.getElementById('cancelAddItemBtn');
+    const addItemForm = document.getElementById('addItemForm');
+    const refreshItemBtn = document.getElementById('refreshItemBtn');
 
-        function editItem() {
-            // Add logic for editing an item here
-            alert("Edit Item button clicked.");
-        }
 
-        function deleteItem() {
-            // Add logic for deleting an item here
-            alert("Delete Item button clicked.");
-        }
+    refreshItemBtn.addEventListener('click', () => {
+        refreshItems();
+    });
 
-function refreshItem() {
+ // Show modal when "Add Item" button is clicked
+    addItemBtn.addEventListener('click', () => {
+        addItemModal.style.display = 'block';
+    });
+
+    // Close modal when "Cancel" button is clicked
+    cancelAddItemBtn.addEventListener('click', () => {
+        addItemModal.style.display = 'none';
+    });
+
+  // Handle form submission for adding item
+    addItemForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        // Get form input values
+        const itemName = document.getElementById('itemName').value;
+        const itemPrice = parseFloat(document.getElementById('itemPrice').value);
+        const itemLinkToOrder = document.getElementById('itemLinkToOrder').value;
+        const itemDescription = document.getElementById('itemDescription').value;
+
+
+        // Prepare JSON data
+        const data = {
+            name: itemName,
+            price: itemPrice,
+            linkToOrder: itemLinkToOrder,
+            description: itemDescription
+        };
+
+        try {
+            // Send POST request to API endpoint
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                // If successful, close modal and refresh table
+                addItemModal.style.display = 'none';
+                refreshItems();
+            } else {
+                // If unsuccessful, display error message
+                alert('Failed to add item. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+let data; 
+// Function to refresh items
+function refreshItems() {
     fetch(apiUrl)
         .then(response => response.json())
-        .then(data => {
+        .then(items => {
+            data = items; // Assign data to the variable
             // Update table
             const table = document.getElementById("wishlistTable");
             table.innerHTML = `
@@ -98,17 +286,51 @@ function refreshItem() {
             const linkToOrderTextArea = document.getElementById("linkToOrder");
             const descriptionTextArea = document.getElementById("description");
             if (data.length > 0) {
-                linkToOrderTextArea.value = data[0].linkToOrder;
-                descriptionTextArea.value = data[0].description || "";
+                linkToOrderTextArea.value = data[0].linkToOrder || '';
+                descriptionTextArea.value = data[0].description || '';
             } else {
-                linkToOrderTextArea.value = "";
-                descriptionTextArea.value = "";
+                linkToOrderTextArea.value = '';
+                descriptionTextArea.value = '';
             }
+
+            // Remove previous event listener before adding a new one
+            table.removeEventListener('click', handleTableRowClick);
+            table.addEventListener('click', handleTableRowClick);
         })
         .catch(error => {
             console.error("Error fetching wishlist items:", error);
         });
 }
+
+// Function to handle table row click event
+function handleTableRowClick(e) {
+    const target = e.target;
+    // Check if clicked element is a table row
+    if (target.tagName === 'TD' && target.parentNode.tagName === 'TR') {
+        // Get data from clicked row
+        const itemId = parseInt(target.parentNode.cells[0].textContent); // Convert itemId to a number
+        const itemLinkToOrder = data.find(item => item.id === itemId)?.linkToOrder || ''; // Use optional chaining to handle undefined
+        const itemDescription = data.find(item => item.id === itemId)?.description || ''; // Use optional chaining to handle undefined
+
+        // Set data to textareas
+        const linkToOrderTextArea = document.getElementById("linkToOrder");
+        const descriptionTextArea = document.getElementById("description");
+        linkToOrderTextArea.value = itemLinkToOrder;
+        descriptionTextArea.value = itemDescription;
+
+        // Remove selected class from previously selected row
+        const selectedRow = document.querySelector(".selected");
+        if (selectedRow) {
+            selectedRow.classList.remove("selected");
+        }
+
+        // Add selected class to clicked row
+        target.parentNode.classList.add("selected");
+    }
+}
+
+         // Call refreshItems() on page load
+         window.addEventListener('load', refreshItems);
 
 
 </script>
