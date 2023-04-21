@@ -3,19 +3,15 @@ package com.example.wishlist.controller
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Directive, ExceptionHandler, RejectionHandler, Route}
-import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 import com.example.wishlist.model.WishlistItemInput
 import com.example.wishlist.model.WishlistJsonProtocol._
 import com.example.wishlist.service.WishlistService
-import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 
 class WishlistController(wishlistService: WishlistService) {
+  private val rejectionHandler: RejectionHandler = corsRejectionHandler.withFallback(RejectionHandler.default)
 
-  // Custom rejection handler
-  val rejectionHandler: RejectionHandler = corsRejectionHandler.withFallback(RejectionHandler.default)
-
-  // Custom exception handler
-  val exceptionHandler: ExceptionHandler = ExceptionHandler {
+  private val exceptionHandler: ExceptionHandler = ExceptionHandler {
     case e: NoSuchElementException =>
       complete(StatusCodes.NotFound, "Cannot find resource")
     case e: ClassCastException =>
@@ -26,9 +22,8 @@ class WishlistController(wishlistService: WishlistService) {
       complete(StatusCodes.InternalServerError, e.getMessage)
   }
 
-  val handleErrors: Directive[Unit] = handleRejections(rejectionHandler) & handleExceptions(exceptionHandler)
+  private val handleErrors: Directive[Unit] = handleRejections(rejectionHandler) & handleExceptions(exceptionHandler)
 
-  // Define the routes for the controller
   val route: Route =
     cors() {
       handleErrors {
