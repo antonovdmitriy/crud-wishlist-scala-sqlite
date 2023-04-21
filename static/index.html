@@ -143,11 +143,11 @@ button:hover {
 
 <body>
 <h1>Wishlist</h1>
-<button id="addItemBtn">Add Item</button>
-<button id="editItemBtn">Edit Item</button>
-<button id="deleteItemBtn">Delete Item</button>
-<button id="refreshItemBtn">Refresh Items</button>
-<table id="wishlistTable">
+<button id="add-item-btn">Add Item</button>
+<button id="edit-item-btn">Edit Item</button>
+<button id="delete-item-btn">Delete Item</button>
+<button id="refresh-item-btn">Refresh Items</button>
+<table id="wishlist-table">
     <tr>
         <th>Id</th>
         <th>Name</th>
@@ -165,25 +165,25 @@ button:hover {
     </tr>
     <!-- Add more rows as needed -->
 </table>
-<textarea id="linkToOrder" placeholder="Link to Order"></textarea>
+<textarea id="link-to-order" placeholder="Link to Order"></textarea>
 <textarea id="description" placeholder="Description"></textarea>
 
 <!-- Modal window for adding item -->
-<div id="addItemModal" class="modal">
+<div id="add-item-modal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Add Item</h2>
-        <form id="addItemForm">
-            <label for="itemName">Name:</label>
-            <input type="text" id="itemName" required><br>
-            <label for="itemPrice">Price:</label>
-            <input type="text" id="itemPrice" required><br>
-            <label for="itemLinkToOrder">Link to Order:</label>
-            <textarea id="itemLinkToOrder"></textarea><br>
-            <label for="itemDescription">Description:</label>
-            <textarea id="itemDescription"></textarea><br>
+        <form id="add-item-form">
+            <label for="item-name">Name:</label>
+            <input type="text" id="item-name" required><br>
+            <label for="item-price">Price:</label>
+            <input type="text" id="item-price" required><br>
+            <label for="item-link-to-order">Link to Order:</label>
+            <textarea id="item-link-to-order"></textarea><br>
+            <label for="item-description">Description:</label>
+            <textarea id="item-description"></textarea><br>
             <button type="submit">OK</button>
-            <button type="button" id="cancelAddItemBtn">Cancel</button>
+            <button type="button" id="cancel-add-btn">Cancel</button>
         </form>
     </div>
 </div>
@@ -192,12 +192,12 @@ button:hover {
 <script>
  const apiUrl = "/wishlist";
 
-  const table = document.getElementById('wishlistTable');
-    const addItemBtn = document.getElementById('addItemBtn');
-    const addItemModal = document.getElementById('addItemModal');
-    const cancelAddItemBtn = document.getElementById('cancelAddItemBtn');
-    const addItemForm = document.getElementById('addItemForm');
-    const refreshItemBtn = document.getElementById('refreshItemBtn');
+  const table = document.getElementById('wishlist-table');
+    const addItemBtn = document.getElementById('add-item-btn');
+    const addItemModal = document.getElementById('add-item-modal');
+    const cancelAddItemBtn = document.getElementById('cancel-add-btn');
+    const addItemForm = document.getElementById('add-item-form');
+    const refreshItemBtn = document.getElementById('refresh-item-btn');
 
 
     refreshItemBtn.addEventListener('click', () => {
@@ -219,10 +219,10 @@ button:hover {
         event.preventDefault();
 
         // Get form input values
-        const itemName = document.getElementById('itemName').value;
-        const itemPrice = parseFloat(document.getElementById('itemPrice').value);
-        const itemLinkToOrder = document.getElementById('itemLinkToOrder').value;
-        const itemDescription = document.getElementById('itemDescription').value;
+        const itemName = document.getElementById('item-name').value;
+        const itemPrice = parseFloat(document.getElementById('item-price').value);
+        const itemLinkToOrder = document.getElementById('item-link-to-order').value;
+        const itemDescription = document.getElementById('item-description').value;
 
 
         // Prepare JSON data
@@ -264,7 +264,7 @@ function refreshItems() {
         .then(items => {
             data = items; // Assign data to the variable
             // Update table
-            const table = document.getElementById("wishlistTable");
+            const table = document.getElementById("wishlist-table");
             table.innerHTML = `
                 <tr>
                     <th>Id</th>
@@ -283,7 +283,7 @@ function refreshItems() {
             });
 
             // Update text areas
-            const linkToOrderTextArea = document.getElementById("linkToOrder");
+            const linkToOrderTextArea = document.getElementById("link-to-order");
             const descriptionTextArea = document.getElementById("description");
             if (data.length > 0) {
                 linkToOrderTextArea.value = data[0].linkToOrder || '';
@@ -313,7 +313,7 @@ function handleTableRowClick(e) {
         const itemDescription = data.find(item => item.id === itemId)?.description || ''; // Use optional chaining to handle undefined
 
         // Set data to textareas
-        const linkToOrderTextArea = document.getElementById("linkToOrder");
+        const linkToOrderTextArea = document.getElementById("link-to-order");
         const descriptionTextArea = document.getElementById("description");
         linkToOrderTextArea.value = itemLinkToOrder;
         descriptionTextArea.value = itemDescription;

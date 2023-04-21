@@ -12,11 +12,11 @@ class WishlistController(wishlistService: WishlistService) {
   private val rejectionHandler: RejectionHandler = corsRejectionHandler.withFallback(RejectionHandler.default)
 
   private val exceptionHandler: ExceptionHandler = ExceptionHandler {
-    case e: NoSuchElementException =>
+    case _: NoSuchElementException =>
       complete(StatusCodes.NotFound, "Cannot find resource")
-    case e: ClassCastException =>
+    case _: ClassCastException =>
       complete(StatusCodes.NotFound, "Incorrect resource returned")
-    case e: IllegalArgumentException =>
+    case _: IllegalArgumentException =>
       complete(StatusCodes.BadRequest, "Illegal argument passed")
     case e: RuntimeException =>
       complete(StatusCodes.InternalServerError, e.getMessage)
