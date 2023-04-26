@@ -1,38 +1,38 @@
 const apiUrl = "http://localhost:8080/wishlist";
 
-  const table = document.getElementById('wishlist-table');
-    const addItemBtn = document.getElementById('add-item-btn');
-    const editItemBtn = document.getElementById('edit-item-btn');
-    const deleteItemBtn = document.getElementById('delete-item-btn');
+const table = document.getElementById('wishlist-table');
+const addItemBtn = document.getElementById('add-item-btn');
+const editItemBtn = document.getElementById('edit-item-btn');
+const deleteItemBtn = document.getElementById('delete-item-btn');
 
-    const itemModal = document.getElementById('item-modal');
-    const cancelAddItemBtn = document.getElementById('cancel-add-btn');
-    const itemForm = document.getElementById('item-form');
-    const refreshItemBtn = document.getElementById('refresh-item-btn');
-    const closeBtn = document.querySelector('.close'); // Get the close button element
+const itemModal = document.getElementById('item-modal');
+const cancelAddItemBtn = document.getElementById('cancel-add-btn');
+const itemForm = document.getElementById('item-form');
+const refreshItemBtn = document.getElementById('refresh-item-btn');
+const closeBtn = document.querySelector('.close'); // Get the close button element
 
 let data;
 let currentItem;
 let formMode;
 
-    editItemBtn.disabled = true
-    deleteItemBtn.disabled = true
-    refreshItemBtn.addEventListener('click', () => {
-        refreshItems();
-    });
+editItemBtn.disabled = true
+deleteItemBtn.disabled = true
+refreshItemBtn.addEventListener('click', () => {
+    refreshItems();
+});
 
- // Show modal when "Add Item" button is clicked
-    addItemBtn.addEventListener('click', () => {
-        resetModalFields(itemModal);
-        formMode = 'add';
-        document.getElementById('modal-title').innerHTML = 'Add item'
-        itemModal.style.display = 'block';
-    });
+// Show modal when "Add Item" button is clicked
+addItemBtn.addEventListener('click', () => {
+    resetModalFields(itemModal);
+    formMode = 'add';
+    document.getElementById('modal-title').innerHTML = 'Add item'
+    itemModal.style.display = 'block';
+});
 
- // Show modal when "Edit Item" button is clicked
- editItemBtn.addEventListener('click', () => {
+// Show modal when "Edit Item" button is clicked
+editItemBtn.addEventListener('click', () => {
 
-     if(currentItem){
+    if (currentItem) {
         resetModalFields(itemModal);
 
         formMode = 'edit';
@@ -44,15 +44,15 @@ let formMode;
         document.getElementById('item-description').value = currentItem.description;
 
         itemModal.style.display = 'block';
-        }
-    });
+    }
+});
 
 deleteItemBtn.addEventListener('click', async (event) => {
-        event.preventDefault();
-        if(currentItem){
+    event.preventDefault();
+    if (currentItem) {
         try {
             // Send POST request to API endpoint
-              const response = await fetch(`${apiUrl}/${currentItem.id}`, {
+            const response = await fetch(`${apiUrl}/${currentItem.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,53 +67,53 @@ deleteItemBtn.addEventListener('click', async (event) => {
         } catch (error) {
             console.error('Error:', error);
         }
-        }
-    });
+    }
+});
 
 
 
-    // Close modal when "Cancel" button is clicked
-    cancelAddItemBtn.addEventListener('click', () => {
-        itemModal.style.display = 'none';
-        formMode = undefined;
-    });
+// Close modal when "Cancel" button is clicked
+cancelAddItemBtn.addEventListener('click', () => {
+    itemModal.style.display = 'none';
+    formMode = undefined;
+});
 
-    // Close modal when "close" button is clicked
-    closeBtn.addEventListener('click', () => {
-        itemModal.style.display = 'none';
-        formMode = undefined;
-    });
+// Close modal when "close" button is clicked
+closeBtn.addEventListener('click', () => {
+    itemModal.style.display = 'none';
+    formMode = undefined;
+});
 
 function resetModalFields(element) {
-  // Get all input fields within the specified element
-  const inputFields = element.querySelectorAll("input, textarea");
+    // Get all input fields within the specified element
+    const inputFields = element.querySelectorAll("input, textarea");
 
-  // Loop through each input field and reset its value to empty
-  inputFields.forEach(input => {
-    input.value = "";
-  });
+    // Loop through each input field and reset its value to empty
+    inputFields.forEach(input => {
+        input.value = "";
+    });
 }
 
-  // Handle form submission for adding item
-    itemForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
+// Handle form submission for adding item
+itemForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-        // Get form input values
-        const itemName = document.getElementById('item-name').value;
-        const itemPrice = parseFloat(document.getElementById('item-price').value);
-        const itemLinkToOrder = document.getElementById('item-link-to-order').value;
-        const itemDescription = document.getElementById('item-description').value;
+    // Get form input values
+    const itemName = document.getElementById('item-name').value;
+    const itemPrice = parseFloat(document.getElementById('item-price').value);
+    const itemLinkToOrder = document.getElementById('item-link-to-order').value;
+    const itemDescription = document.getElementById('item-description').value;
 
-        // Prepare JSON data
-        const data = {
-            name: itemName,
-            price: itemPrice,
-            linkToOrder: itemLinkToOrder,
-            description: itemDescription
-        };
+    // Prepare JSON data
+    const data = {
+        name: itemName,
+        price: itemPrice,
+        linkToOrder: itemLinkToOrder,
+        description: itemDescription
+    };
 
 
-        if(formMode == 'add'){
+    if (formMode == 'add') {
 
         try {
             // Send POST request to API endpoint
@@ -137,9 +137,9 @@ function resetModalFields(element) {
         } catch (error) {
             console.error('Error:', error);
         }
-        }
+    }
 
-        if(formMode == 'edit'){
+    if (formMode == 'edit') {
 
         try {
             // Send PUT request to API endpoint
@@ -163,9 +163,9 @@ function resetModalFields(element) {
         } catch (error) {
             console.error('Error:', error);
         }
-        }
+    }
 
-    });
+});
 
 
 // Function to refresh items
@@ -221,8 +221,8 @@ function handleTableRowClick(e) {
     if (target.tagName === 'TD' && target.parentNode.tagName === 'TR') {
 
 
-    editItemBtn.disabled = false
-    deleteItemBtn.disabled = false
+        editItemBtn.disabled = false
+        deleteItemBtn.disabled = false
 
         // Get data from clicked row
         const itemId = parseInt(target.parentNode.cells[0].textContent); // Convert itemId to a number
@@ -249,8 +249,8 @@ function handleTableRowClick(e) {
     }
 }
 
-         // Call refreshItems() on page load
-         window.addEventListener('load', refreshItems);
+// Call refreshItems() on page load
+window.addEventListener('load', refreshItems);
 
 
 
