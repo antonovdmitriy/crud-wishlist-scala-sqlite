@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:8080/wishlist";
+const apiUrl = "/wishlist";
 
 const table = document.getElementById('wishlist-table');
 const addItemBtn = document.getElementById('add-item-btn');

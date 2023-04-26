@@ -5,8 +5,6 @@ services:
     image: ghcr.io/antonovdmitriy/crud-wishlist-scala-sqlite/wishlist-scala-akka-sqlite:latest
     networks:
       - backend
-    expose:
-      - "8080"
 
   nginx:
     image: ghcr.io/antonovdmitriy/crud-wishlist-scala-sqlite/wishlist-front-static:latest
