@@ -169,11 +169,11 @@ button:hover {
 <textarea id="description" placeholder="Description"></textarea>
 
 <!-- Modal window for adding item -->
-<div id="add-item-modal" class="modal">
+<div id="item-modal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Add Item</h2>
-        <form id="add-item-form">
+        <form id="item-form">
             <label for="item-name">Name:</label>
             <input type="text" id="item-name" required><br>
             <label for="item-price">Price:</label>
@@ -190,15 +190,22 @@ button:hover {
 
 
 <script>
- const apiUrl = "/wishlist";
+ const apiUrl = "http://localhost:8080/wishlist";
 
   const table = document.getElementById('wishlist-table');
     const addItemBtn = document.getElementById('add-item-btn');
-    const addItemModal = document.getElementById('add-item-modal');
-    const cancelAddItemBtn = document.getElementById('cancel-add-btn');
-    const addItemForm = document.getElementById('add-item-form');
-    const refreshItemBtn = document.getElementById('refresh-item-btn');
+    const editItemBtn = document.getElementById('edit-item-btn');
+    const deleteItemBtn = document.getElementById('delete-item-btn');
 
+    const itemModal = document.getElementById('item-modal');
+    const cancelAddItemBtn = document.getElementById('cancel-add-btn');
+    const itemForm = document.getElementById('item-form');
+    const refreshItemBtn = document.getElementById('refresh-item-btn');
+    const closeBtn = document.querySelector('.close'); // Get the close button element
+
+let data;
+let currentItem;
+let formMode;
 
     refreshItemBtn.addEventListener('click', () => {
         refreshItems();
@@ -206,16 +213,72 @@ button:hover {
 
  // Show modal when "Add Item" button is clicked
     addItemBtn.addEventListener('click', () => {
-        addItemModal.style.display = 'block';
+        resetModalFields(itemModal);
+        formMode = 'add';
+        itemModal.style.display = 'block';
     });
+
+ // Show modal when "Edit Item" button is clicked
+ editItemBtn.addEventListener('click', () => {
+        resetModalFields(itemModal);
+
+        formMode = 'edit';
+
+        document.getElementById('item-name').value = currentItem.name;
+        document.getElementById('item-price').value = currentItem.price;
+        document.getElementById('item-link-to-order').value = currentItem.linkToOrder;
+        document.getElementById('item-description').value = currentItem.description;
+
+        itemModal.style.display = 'block';
+    });
+
+deleteItemBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        try {
+            // Send POST request to API endpoint
+              const response = await fetch(`${apiUrl}/${currentItem.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                refreshItems();
+            } else {
+                alert('Failed to add item. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+
 
     // Close modal when "Cancel" button is clicked
     cancelAddItemBtn.addEventListener('click', () => {
-        addItemModal.style.display = 'none';
+        itemModal.style.display = 'none';
+        formMode = undefined;
     });
 
+    // Close modal when "close" button is clicked
+    closeBtn.addEventListener('click', () => {
+        itemModal.style.display = 'none';
+        formMode = undefined;
+    });
+
+function resetModalFields(element) {
+  // Get all input fields within the specified element
+  const inputFields = element.querySelectorAll("input, textarea");
+
+  // Loop through each input field and reset its value to empty
+  inputFields.forEach(input => {
+    input.value = "";
+  });
+}
+
   // Handle form submission for adding item
-    addItemForm.addEventListener('submit', async (event) => {
+    itemForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         // Get form input values
@@ -224,7 +287,6 @@ button:hover {
         const itemLinkToOrder = document.getElementById('item-link-to-order').value;
         const itemDescription = document.getElementById('item-description').value;
 
-
         // Prepare JSON data
         const data = {
             name: itemName,
@@ -232,6 +294,9 @@ button:hover {
             linkToOrder: itemLinkToOrder,
             description: itemDescription
         };
+
+
+        if(formMode == 'add'){
 
         try {
             // Send POST request to API endpoint
@@ -245,7 +310,8 @@ button:hover {
 
             if (response.ok) {
                 // If successful, close modal and refresh table
-                addItemModal.style.display = 'none';
+                itemModal.style.display = 'none';
+                formMode = undefined;
                 refreshItems();
             } else {
                 // If unsuccessful, display error message
@@ -254,15 +320,44 @@ button:hover {
         } catch (error) {
             console.error('Error:', error);
         }
+        }
+
+        if(formMode == 'edit'){
+
+        try {
+            // Send PUT request to API endpoint
+            const response = await fetch(`${apiUrl}/${currentItem.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                // If successful, close modal and refresh table
+                itemModal.style.display = 'none';
+                formMode = undefined;
+                refreshItems();
+            } else {
+                // If unsuccessful, display error message
+                alert('Failed to add item. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        }
+
     });
 
-let data; 
+
 // Function to refresh items
 function refreshItems() {
     fetch(apiUrl)
         .then(response => response.json())
         .then(items => {
             data = items; // Assign data to the variable
+            currentItem = undefined;
             // Update table
             const table = document.getElementById("wishlist-table");
             table.innerHTML = `
@@ -309,8 +404,11 @@ function handleTableRowClick(e) {
     if (target.tagName === 'TD' && target.parentNode.tagName === 'TR') {
         // Get data from clicked row
         const itemId = parseInt(target.parentNode.cells[0].textContent); // Convert itemId to a number
-        const itemLinkToOrder = data.find(item => item.id === itemId)?.linkToOrder || ''; // Use optional chaining to handle undefined
-        const itemDescription = data.find(item => item.id === itemId)?.description || ''; // Use optional chaining to handle undefined
+
+        currentItem = data.find(item => item.id === itemId)
+
+        const itemLinkToOrder = currentItem.linkToOrder || ''; // Use optional chaining to handle undefined
+        const itemDescription = currentItem.description || ''; // Use optional chaining to handle undefined
 
         // Set data to textareas
         const linkToOrderTextArea = document.getElementById("link-to-order");

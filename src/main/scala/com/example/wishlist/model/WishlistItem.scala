@@ -5,5 +5,5 @@ case class WishlistItem(
     name: String,
     description: Option[String],
     price: Option[Double],
-    linkToOrder: String
+    linkToOrder: Option[String]
 )
