@@ -17,7 +17,7 @@
   --border-color: #ddd;
   --table-background: #f9f9f9;
   --table-hover: #eee;
-  --modal-color: #00000066;
+  --modal-color: #0006;
 }
 
 body {
@@ -211,7 +211,7 @@ button:hover {
   transition: background-color 0.3s ease-in-out;
 }
 
-.theme-switch .slider:before {
+.theme-switch .slider::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -228,6 +228,6 @@ button:hover {
   background-color: var(--primary-color);
 }
 
-.theme-switch input:checked+.slider:before {
+.theme-switch input:checked+.slider::before {
   transform: translateY(-50%) translateX(20px);
 }

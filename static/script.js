@@ -1,69 +1,69 @@
-const apiUrl = "/wishlist";
+const apiUrl = '/wishlist'
 
-const table = document.getElementById('wishlist-table');
-const addItemBtn = document.getElementById('add-item-btn');
-const editItemBtn = document.getElementById('edit-item-btn');
-const deleteItemBtn = document.getElementById('delete-item-btn');
+const table = document.getElementById('wishlist-table')
+const addItemBtn = document.getElementById('add-item-btn')
+const editItemBtn = document.getElementById('edit-item-btn')
+const deleteItemBtn = document.getElementById('delete-item-btn')
 
-const itemModal = document.getElementById('item-modal');
-const cancelAddItemBtn = document.getElementById('cancel-add-btn');
-const itemForm = document.getElementById('item-form');
-const refreshItemBtn = document.getElementById('refresh-item-btn');
-const closeBtn = document.querySelector('.close');
+const itemModal = document.getElementById('item-modal')
+const cancelAddItemBtn = document.getElementById('cancel-add-btn')
+const itemForm = document.getElementById('item-form')
+const refreshItemBtn = document.getElementById('refresh-item-btn')
+const closeBtn = document.querySelector('.close')
 
-let data;
-let currentItem;
-let formMode;
+let data
+let currentItem
+let formMode
 
 editItemBtn.disabled = true
 deleteItemBtn.disabled = true
 
-const themeSwitch = document.getElementById('switch');
+const themeSwitch = document.getElementById('switch')
 
-function toggleTheme() {
-  if (themeSwitch.checked) {
-    document.body.classList.add('dark');
-    document.body.classList.remove('light');
-  } else {
-    document.body.classList.remove('dark');
-    document.body.classList.add('light');
-  }
+function toggleTheme () {
+    if (themeSwitch.checked) {
+        document.body.classList.add('dark')
+        document.body.classList.remove('light')
+    } else {
+        document.body.classList.remove('dark')
+        document.body.classList.add('light')
+    }
 }
 
-themeSwitch.addEventListener('change', toggleTheme);
+themeSwitch.addEventListener('change', toggleTheme)
 
-toggleTheme();
+toggleTheme()
 
 refreshItemBtn.addEventListener('click', () => {
-    refreshItems();
-});
+    refreshItems()
+})
 
 addItemBtn.addEventListener('click', () => {
-    resetModalFields(itemModal);
-    formMode = 'add';
+    resetModalFields(itemModal)
+    formMode = 'add'
     document.getElementById('modal-title').innerHTML = 'Add item'
-    itemModal.style.display = 'block';
-});
+    itemModal.style.display = 'block'
+})
 
 editItemBtn.addEventListener('click', () => {
 
     if (currentItem) {
-        resetModalFields(itemModal);
+        resetModalFields(itemModal)
 
-        formMode = 'edit';
+        formMode = 'edit'
 
         document.getElementById('modal-title').innerHTML = 'Edit item'
-        document.getElementById('item-name').value = currentItem.name;
-        document.getElementById('item-price').value = currentItem.price;
-        document.getElementById('item-link-to-order').value = currentItem.linkToOrder;
-        document.getElementById('item-description').value = currentItem.description;
+        document.getElementById('item-name').value = currentItem.name
+        document.getElementById('item-price').value = currentItem.price
+        document.getElementById('item-link-to-order').value = currentItem.linkToOrder
+        document.getElementById('item-description').value = currentItem.description
 
-        itemModal.style.display = 'block';
+        itemModal.style.display = 'block'
     }
-});
+})
 
 deleteItemBtn.addEventListener('click', async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (currentItem) {
         try {
             const response = await fetch(`${apiUrl}/${currentItem.id}`, {
@@ -71,53 +71,53 @@ deleteItemBtn.addEventListener('click', async (event) => {
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            });
+            })
 
             if (response.ok) {
-                refreshItems();
+                refreshItems()
             } else {
-                alert('Failed to add item. Please try again.');
+                alert('Failed to add item. Please try again.')
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error)
         }
     }
-});
+})
 
 
 
 cancelAddItemBtn.addEventListener('click', () => {
-    itemModal.style.display = 'none';
-    formMode = undefined;
-});
+    itemModal.style.display = 'none'
+    formMode = undefined
+})
 
 closeBtn.addEventListener('click', () => {
-    itemModal.style.display = 'none';
-    formMode = undefined;
-});
+    itemModal.style.display = 'none'
+    formMode = undefined
+})
 
 function resetModalFields(element) {
-    const inputFields = element.querySelectorAll("input, textarea");
+    const inputFields = element.querySelectorAll('input, textarea')
 
     inputFields.forEach(input => {
-        input.value = "";
-    });
+        input.value = ''
+    })
 }
 
 itemForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const itemName = document.getElementById('item-name').value;
-    const itemPrice = parseFloat(document.getElementById('item-price').value);
-    const itemLinkToOrder = document.getElementById('item-link-to-order').value;
-    const itemDescription = document.getElementById('item-description').value;
+    const itemName = document.getElementById('item-name').value
+    const itemPrice = parseFloat(document.getElementById('item-price').value)
+    const itemLinkToOrder = document.getElementById('item-link-to-order').value
+    const itemDescription = document.getElementById('item-description').value
 
     const data = {
         name: itemName,
         price: itemPrice,
         linkToOrder: itemLinkToOrder,
         description: itemDescription
-    };
+    }
 
 
     if (formMode == 'add') {
@@ -129,17 +129,17 @@ itemForm.addEventListener('submit', async (event) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            });
+            })
 
             if (response.ok) {
-                itemModal.style.display = 'none';
-                formMode = undefined;
-                refreshItems();
+                itemModal.style.display = 'none'
+                formMode = undefined
+                refreshItems()
             } else {
-                alert('Failed to add item. Please try again.');
+                alert('Failed to add item. Please try again.')
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error)
         }
     }
 
@@ -152,95 +152,95 @@ itemForm.addEventListener('submit', async (event) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            });
+            })
 
             if (response.ok) {
-                itemModal.style.display = 'none';
-                formMode = undefined;
-                refreshItems();
+                itemModal.style.display = 'none'
+                formMode = undefined
+                refreshItems()
             } else {
-                alert('Failed to add item. Please try again.');
+                alert('Failed to add item. Please try again.')
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error)
         }
     }
 
-});
+})
 
 
 function refreshItems() {
     fetch(apiUrl)
         .then(response => response.json())
         .then(items => {
-            data = items; 
-            currentItem = undefined;
-            const table = document.getElementById("wishlist-table");
+            data = items
+            currentItem = undefined
+            const table = document.getElementById('wishlist-table')
             table.innerHTML = `
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Price</th>
                 </tr>
-            `;
+            `
             data.forEach(item => {
-                const row = document.createElement("tr");
+                const row = document.createElement('tr')
                 row.innerHTML = `
                     <td>${item.id}</td>
                     <td>${item.name}</td>
                     <td>${item.price}</td>
-                `;
-                table.appendChild(row);
-            });
+                `
+                table.appendChild(row)
+            })
 
-            const linkToOrderTextArea = document.getElementById("link-to-order");
-            const descriptionTextArea = document.getElementById("description");
+            const linkToOrderTextArea = document.getElementById('link-to-order')
+            const descriptionTextArea = document.getElementById('description')
             if (data.length > 0) {
-                linkToOrderTextArea.value = data[0].linkToOrder || '';
-                descriptionTextArea.value = data[0].description || '';
+                linkToOrderTextArea.value = data[0].linkToOrder || ''
+                descriptionTextArea.value = data[0].description || ''
             } else {
-                linkToOrderTextArea.value = '';
-                descriptionTextArea.value = '';
+                linkToOrderTextArea.value = ''
+                descriptionTextArea.value = ''
             }
 
-            table.removeEventListener('click', handleTableRowClick);
-            table.addEventListener('click', handleTableRowClick);
+            table.removeEventListener('click', handleTableRowClick)
+            table.addEventListener('click', handleTableRowClick)
         })
         .catch(error => {
-            console.error("Error fetching wishlist items:", error);
-        });
+            console.error('Error fetching wishlist items:', error)
+        })
 }
 
 function handleTableRowClick(e) {
-    const target = e.target;
+    const target = e.target
     if (target.tagName === 'TD' && target.parentNode.tagName === 'TR') {
 
 
         editItemBtn.disabled = false
         deleteItemBtn.disabled = false
 
-        const itemId = parseInt(target.parentNode.cells[0].textContent);
+        const itemId = parseInt(target.parentNode.cells[0].textContent)
 
         currentItem = data.find(item => item.id === itemId)
 
-        const itemLinkToOrder = currentItem.linkToOrder || '';
-        const itemDescription = currentItem.description || '';
+        const itemLinkToOrder = currentItem.linkToOrder || ''
+        const itemDescription = currentItem.description || ''
 
-        const linkToOrderTextArea = document.getElementById("link-to-order");
-        const descriptionTextArea = document.getElementById("description");
-        linkToOrderTextArea.value = itemLinkToOrder;
-        descriptionTextArea.value = itemDescription;
+        const linkToOrderTextArea = document.getElementById('link-to-order')
+        const descriptionTextArea = document.getElementById('description')
+        linkToOrderTextArea.value = itemLinkToOrder
+        descriptionTextArea.value = itemDescription
 
-        const selectedRow = document.querySelector(".selected");
+        const selectedRow = document.querySelector('.selected')
         if (selectedRow) {
-            selectedRow.classList.remove("selected");
+            selectedRow.classList.remove('selected')
         }
 
-        target.parentNode.classList.add("selected");
+        target.parentNode.classList.add('selected')
     }
 }
 
 
-window.addEventListener('load', refreshItems);
+window.addEventListener('load', refreshItems)
 
 
