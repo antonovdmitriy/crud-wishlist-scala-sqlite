@@ -36,3 +36,4 @@ assemblyMergeStrategy in assembly := {
     oldStrategy(x)
 }
 
+Test / fork := true
