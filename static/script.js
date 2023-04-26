@@ -103,64 +103,47 @@ function resetModalFields(element) {
 }
 
 itemForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  const itemName = document.getElementById("item-name").value;
-  const itemPrice = parseFloat(document.getElementById("item-price").value);
-  const itemLinkToOrder = document.getElementById("item-link-to-order").value;
-  const itemDescription = document.getElementById("item-description").value;
-
-  const data = {
-    name: itemName,
-    price: itemPrice,
-    linkToOrder: itemLinkToOrder,
-    description: itemDescription,
-  };
-
-  if (formMode == "add") {
+    event.preventDefault();
+  
+    const itemName = document.getElementById("item-name").value;
+    const itemPrice = parseFloat(document.getElementById("item-price").value);
+    const itemLinkToOrder = document.getElementById("item-link-to-order").value;
+    const itemDescription = document.getElementById("item-description").value;
+  
+    const data = {
+      name: itemName,
+      price: itemPrice,
+      linkToOrder: itemLinkToOrder,
+      description: itemDescription,
+    };
+  
+    let apiUrlWithId = apiUrl;
+    let method = "POST";
+    if (formMode === "edit") {
+      apiUrlWithId += `/${currentItem.id}`;
+      method = "PUT";
+    }
+  
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
+      const response = await fetch(apiUrlWithId, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         itemModal.style.display = "none";
         formMode = undefined;
         refreshItems();
       } else {
-        alert("Failed to add item. Please try again.");
+        alert("Failed to add/edit item. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
     }
-  }
-
-  if (formMode == "edit") {
-    try {
-      const response = await fetch(`${apiUrl}/${currentItem.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        itemModal.style.display = "none";
-        formMode = undefined;
-        refreshItems();
-      } else {
-        alert("Failed to add item. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-});
+  });
 
 function refreshItems() {
   fetch(apiUrl)
