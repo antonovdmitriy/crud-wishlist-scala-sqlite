@@ -94,7 +94,7 @@ trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRo
         val updatedItemInput = WishlistItemInput(
           "updated item",
           Some("updated description"),
-          "updated link",
+          Some("updated link"),
           Some(200.0)
         )
         val updateEntity = HttpEntity(
@@ -139,7 +139,7 @@ trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRo
     WishlistItemInput(
       "test item",
       Some("test description"),
-      "test link",
+      Some("test link"),
       Some(100.0)
     )
   }

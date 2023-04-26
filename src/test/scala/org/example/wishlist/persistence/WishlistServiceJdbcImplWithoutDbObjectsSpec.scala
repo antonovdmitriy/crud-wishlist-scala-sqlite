@@ -41,7 +41,7 @@ class WishlistServiceJdbcImplWithoutDbObjectsSpec extends AnyWordSpec with Match
       val entity = HttpEntity(ContentTypes.`application/json`, WishlistItemInput(
         "test item",
         Some("test description"),
-        "test link",
+        Some("test link"),
         Some(100.0)
       ).toJson.toString)
 
