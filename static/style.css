@@ -1,186 +1,190 @@
-      :root {
-        --primary-color: #8bc34a;
-        --secondary-color: #9e9e9e;
-        --background-color: #181818;
-        --text-color: #eee;
-      }
+:root {
+  --primary-color: #0d47a1;
+  /* --primary-color: #8bc34a; */
 
-      body {
-        background-color: var(--background-color);
-        color: var(--text-color);
-        font-family: Arial, Helvetica, sans-serif;
-      }
+  --secondary-color: #9e9e9e;
+  --background-color: #181818;
+  --text-color: #eee;
 
-      /* Styles for table */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
+  --border-color:#333;
+  --table-background:#444;
+  --table-hover:#555;
+  --modal-color:rgba(0, 0, 0, 0.4);
+}
 
-      th,
-      td {
-        border: 1px solid #333;
-        padding: 8px;
-        text-align: left;
-      }
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-      th {
-        background-color: #444;
-      }
+/* Styles for table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
-      td.selected {
-        background-color: var(--primary-color);
-        color: var(--text-color);
-      }
+th,
+td {
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  text-align: left;
+}
 
-      table tr:hover {
-        background-color: #555;
-        color: var(--text-color);
-      }
+th {
+  background-color: var(--table-background);
+}
 
-      /* Styles for text areas */
-      textarea {
-        width: 100%;
-        height: 100px;
-        resize: vertical;
-        padding: 10px;
-        margin-bottom: 20px;
-        background-color: #333;
-        color: var(--text-color);
-        border: 1px solid #555;
-      }
+td.selected {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
 
-      /* Styles for modal */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-        opacity: 0;
-        animation: fade-in 0.2s ease-in-out forwards;
-      }
+table tr:hover {
+  background-color: var(--table-hover);
+  color: var(--text-color);
+}
 
-      @keyframes fade-in {
-        0% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
+/* Styles for text areas */
+textarea {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: var(--border-color);
+  color: var(--text-color);
+  border: 1px solid var(--table-hover);
+}
 
-      .modal-content {
-        background-color: #333;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #555;
-        width: 80%;
-        max-width: 500px;
-        box-shadow: 0px 0px 10px var(--primary-color);
-      }
+/* Styles for modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--modal-color);
+  opacity: 0;
+  animation: fade-in 0.2s ease-in-out forwards;
+}
 
-      .modal input[type="text"],
-      .modal textarea {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        box-sizing: border-box;
-        background-color: #555;
-        color: var(--text-color);
-        border: none;
-      }
+@keyframes fade-in {
+   0% {
+    opacity: 0;
+  }
 
-      .modal button {
-        padding: 14px 20px;
-        margin: 8px 0;
-        background-color: #555;
-        color: var(--text-color);
-        border: none;
-        cursor: pointer;
-      }
+  100% {
+    opacity: 1;
+  }
+}
 
-      .close {
-        color: var(--primary-color);
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
+.modal-content {
+  background-color: var(--border-color);
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid var(--table-hover);
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
 
-      .close:hover,
-      .close:focus {
-        color: var(--text-color);
-        text-decoration: none;
-        cursor: pointer;
-      }
+.modal input[type="text"],
+.modal textarea {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color: var(--table-hover);
+  color: var(--text-color);
+  border: none;
+}
 
-      /* Styles for buttons */
-      button {
-        background-color: #8bc34a;
-        color: #000;
-        border: none;
-        padding: 10px 20px;
-        font-weight: bold;
-        border-radius: 5px;
-        position: relative;
-        overflow: hidden;
-      }
 
-      button:hover {
-        background-color: #444;
-        color: var(--text-color);
-        box-shadow: 0px 0px 10px var(--primary-color);
-      }
+.modal button {
+  padding: 14px 20px;
+  margin: 8px 0;
+  background-color: var(--table-hover);
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+}
 
-      .button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background-color: var(--primary-color);
-        z-index: -1;
-        transition: left 0.3s ease-in-out;
-      }
-      
-      .button:hover::before {
-        left: 0;
-      }
+.close {
+  color: var(--primary-color);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-      .addButton {
-        background-color: var(--primary-color);
-        color: var(--text-color);
-        border: none;
-        cursor: pointer;
-        padding: 10px 20px;
-        margin-right: 10px;
-      }
+.close:hover,
+.close:focus {
+  color: var(--text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
 
-      .selected {
-        background-color: #333;
-        color: #fff;
-      }
+/* Styles for buttons */
+button {
+  background-color: var(--primary-color);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
 
-      #edit-item-btn:disabled,
-      #delete-item-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        background-color: #9e9e9e;
-        /* Add background color for disabled state */
-        color: #000;
-        /* Add text color for disabled state */
-      }
+button:hover {
+  background-color: var(--table-background);
+  color: var(--text-color);
+  box-shadow: 0px 0px 10px var(--primary-color);
+}
 
-      #edit-item-btn:disabled:hover,
-      #delete-item-btn:disabled:hover {
-        opacity: 0.5;
-        background-color: #9e9e9e;
-        color: #000;
-      }
+.button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-color); /* Update primary color to dark blue */
+  z-index: -1;
+  transition: left 0.3s ease-in-out;
+}
+
+.button:hover::before {
+  left: 0;
+}
+
+.addButton {
+  background-color: var(--primary-color); /* Update primary color to dark blue */
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-right: 10px;
+}
+
+.selected {
+  background-color: #333;
+  color: #eee; /* Update text color to light gray */
+}
+
+#edit-item-btn:disabled,
+#delete-item-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--primary-color);
+}
+
+#edit-item-btn:disabled:hover,
+#delete-item-btn:disabled:hover {
+  opacity: 0.5;
+  background-color: var(--primary-color);
+}
