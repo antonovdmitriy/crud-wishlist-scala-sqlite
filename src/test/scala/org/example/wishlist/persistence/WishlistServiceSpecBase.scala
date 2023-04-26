@@ -16,12 +16,14 @@ import spray.json._
 trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRouteTest {
 
   def wishlistService: WishlistService // Abstract method to be implemented in the child classes
-  val route: Route = new WishlistController(wishlistService).route
+
+  def controller: WishlistController = new WishlistController(wishlistService);
+  val route: Route = controller.route
 
   "WishlistService" should {
     "get all items from the wishlist" in {
       val itemInput: WishlistItemInput = buildValidWishListInputItem
-      val entity                       = HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
+      val entity = HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
       // Add an item to the wishlist
       Post("/wishlist", entity) ~> route ~> check {
@@ -43,8 +45,7 @@ trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRo
 
     "add an item to the wishlist" in {
       val itemInput: WishlistItemInput = buildValidWishListInputItem
-      val entity =
-        HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
+      val entity = HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
       Post("/wishlist", entity) ~> route ~> check {
         status shouldBe StatusCodes.Created
@@ -54,6 +55,14 @@ trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRo
         responseItem.description shouldBe itemInput.description
         responseItem.linkToOrder shouldBe itemInput.linkToOrder
         responseItem.price shouldBe itemInput.price
+      }
+    }
+
+    "add an wrong item to the wishlist" in {
+      val entity = HttpEntity(ContentTypes.`application/json`, buildInvalidWishListInputItem)
+
+      Post("/wishlist", entity) ~> route ~> check {
+        status shouldBe StatusCodes.BadRequest
       }
     }
 
@@ -107,7 +116,7 @@ trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRo
 
     "delete an item from the wishlist" in {
       val itemInput: WishlistItemInput = buildValidWishListInputItem
-      val entity                       = HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
+      val entity = HttpEntity(ContentTypes.`application/json`, itemInput.toJson.toString)
 
       Post("/wishlist", entity) ~> route ~> check {
         val responseItem = responseAs[WishlistItem]
@@ -116,6 +125,12 @@ trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRo
           status shouldBe StatusCodes.OK
           responseEntity.toStrict(2.seconds).map(_.data.utf8String).futureValue shouldBe "1"
         }
+      }
+    }
+
+    "return NotFound for non-existing id" in {
+      Get("/wishlist/100") ~> route ~> check {
+        status shouldBe StatusCodes.NotFound
       }
     }
   }
@@ -127,5 +142,9 @@ trait WishlistServiceSpecBase extends AnyWordSpec with Matchers with ScalatestRo
       "test link",
       Some(100.0)
     )
+  }
+
+  private def buildInvalidWishListInputItem = {
+    "some text without structure"
   }
 }

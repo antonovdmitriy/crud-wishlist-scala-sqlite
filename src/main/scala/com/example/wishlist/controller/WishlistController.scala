@@ -11,18 +11,7 @@ import com.example.wishlist.service.WishlistService
 class WishlistController(wishlistService: WishlistService) {
   private val rejectionHandler: RejectionHandler = corsRejectionHandler.withFallback(RejectionHandler.default)
 
-  private val exceptionHandler: ExceptionHandler = ExceptionHandler {
-    case _: NoSuchElementException =>
-      complete(StatusCodes.NotFound, "Cannot find resource")
-    case _: ClassCastException =>
-      complete(StatusCodes.NotFound, "Incorrect resource returned")
-    case _: IllegalArgumentException =>
-      complete(StatusCodes.BadRequest, "Illegal argument passed")
-    case e: RuntimeException =>
-      complete(StatusCodes.InternalServerError, e.getMessage)
-  }
-
-  private val handleErrors: Directive[Unit] = handleRejections(rejectionHandler) & handleExceptions(exceptionHandler)
+  private val handleErrors: Directive[Unit] = handleRejections(rejectionHandler) & handleExceptions(customExceptionHandler)
 
   val route: Route =
     cors() {
@@ -70,8 +59,7 @@ class WishlistController(wishlistService: WishlistService) {
       }
     }
 
-  // Define a custom exception handler
-  def customExceptionHandler: ExceptionHandler = ExceptionHandler { case ex: Exception =>
+  private def customExceptionHandler: ExceptionHandler = ExceptionHandler { case ex: Exception =>
     println(s"Exception caught in WishlistController: ${ex.getMessage}")
     ex.printStackTrace()
     complete(StatusCodes.InternalServerError, s"Internal Server Error: ${ex.getMessage}")

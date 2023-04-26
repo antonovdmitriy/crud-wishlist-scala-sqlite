@@ -6,8 +6,6 @@ services:
     build: .
     networks:
       - backend
-    expose:
-      - "8080"
 
   nginx:
     image: wishlist-static:latest
