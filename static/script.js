@@ -193,7 +193,7 @@ function handleTableRowClick(e) {
     editItemBtn.disabled = false;
     deleteItemBtn.disabled = false;
 
-    const itemId = parseInt(target.parentNode.cells[0].textContent);
+    const itemId = parseInt(target.parentNode.cells[0].textContent, 10);
 
     currentItem = data.find((item) => item.id === itemId);
 

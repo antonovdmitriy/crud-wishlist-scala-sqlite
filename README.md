@@ -15,5 +15,5 @@
 
 ## How it looks
 
-![](images/dark_wish.png)
-![](images/light_wish.png)
+![dark wish image](images/dark_wish.png)
+![light wish image](images/light_wish.png)
