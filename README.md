@@ -12,3 +12,8 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=antonovdmitriy_crud-wishlist-scala-sqlite&metric=bugs)](https://sonarcloud.io/summary/new_code?id=antonovdmitriy_crud-wishlist-scala-sqlite)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=antonovdmitriy_crud-wishlist-scala-sqlite&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=antonovdmitriy_crud-wishlist-scala-sqlite)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=antonovdmitriy_crud-wishlist-scala-sqlite&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=antonovdmitriy_crud-wishlist-scala-sqlite)
+
+## How it looks
+
+![](images/dark_wish.png)
+![](images/light_wish.png)

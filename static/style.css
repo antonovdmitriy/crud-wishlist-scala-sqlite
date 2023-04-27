@@ -224,10 +224,10 @@ button:hover {
   transition: transform 0.3s ease-in-out;
 }
 
-.theme-switch input:checked+.slider {
+.theme-switch input:checked + .slider {
   background-color: var(--primary-color);
 }
 
-.theme-switch input:checked+.slider::before {
+.theme-switch input:checked + .slider::before {
   transform: translateY(-50%) translateX(20px);
 }
