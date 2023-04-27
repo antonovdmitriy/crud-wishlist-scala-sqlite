@@ -13,6 +13,13 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=antonovdmitriy_crud-wishlist-scala-sqlite&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=antonovdmitriy_crud-wishlist-scala-sqlite)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=antonovdmitriy_crud-wishlist-scala-sqlite&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=antonovdmitriy_crud-wishlist-scala-sqlite)
 
+## Goal
+
+To build simple scala application with rest api using akka-http and store data in embedded sqllite
+
+## How to run
+
+
 ## How it looks
 
 ![dark wish image](images/dark_wish.png)
