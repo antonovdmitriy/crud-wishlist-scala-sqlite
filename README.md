@@ -15,7 +15,7 @@
 
 ## Goal
 
-To build simple scala application with rest api using akka-http and store data in embedded sqllite
+To build simple scala application with rest API using akka-http and store data in embedded sqllite
 
 ## How it looks
 
