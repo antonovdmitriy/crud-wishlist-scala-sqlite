@@ -20,13 +20,13 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-testkit" % AkkaHttpVersion % "test"
 )
 
+libraryDependencies += "ch.megard" %% "akka-http-cors" % "1.2.0"
+
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.15" % "test"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"
 
 libraryDependencies += "org.xerial" % "sqlite-jdbc" % "3.41.2.1"
 libraryDependencies += "com.zaxxer" % "HikariCP" % "5.0.1"
-
-//coverageEnabled := true TODO: to do something with it.
 
 assemblyMergeStrategy in assembly := {
   case "META-INF/versions/9/module-info.class" =>
@@ -36,3 +36,4 @@ assemblyMergeStrategy in assembly := {
     oldStrategy(x)
 }
 
+Test / fork := true

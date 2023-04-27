@@ -51,7 +51,7 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
       preparedStatement.setString(1, itemInput.name)
       preparedStatement.setString(2, itemInput.description.orNull)
       preparedStatement.setBigDecimal(3, itemInput.price.map(_.bigDecimal).orNull)
-      preparedStatement.setString(4, itemInput.linkToOrder)
+      preparedStatement.setString(4, itemInput.linkToOrder.orNull)
 
       preparedStatement.executeUpdate()
 
@@ -82,10 +82,12 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
     try {
       connection = dataSource.getConnection()
       statement =
-        connection.prepareStatement("UPDATE wishlist SET name = ?, price = ? WHERE id = ?")
+        connection.prepareStatement("UPDATE wishlist SET name = ?, price = ?, description = ?, link_to_order = ?  WHERE id = ?")
       statement.setString(1, itemInput.name)
       statement.setBigDecimal(2, itemInput.price.map(_.bigDecimal).orNull)
-      statement.setInt(3, id)
+      statement.setString(3, itemInput.description.orNull)
+      statement.setString(4, itemInput.linkToOrder.orNull)
+      statement.setInt(5, id)
       val updatedRows = statement.executeUpdate()
       if (updatedRows > 0) {
         Some(
@@ -128,7 +130,7 @@ class WishlistServiceJdbcImpl(dataSource: DataSource) extends WishlistService {
       val price =
         if (priceBigDecimal != null) Some(priceBigDecimal.doubleValue())
         else None
-      val linkToOrder = resultSet.getString("link_to_order")
+      val linkToOrder = Option(resultSet.getString("link_to_order"))
       items :+= WishlistItem(id, name, description, price, linkToOrder)
     }
     items

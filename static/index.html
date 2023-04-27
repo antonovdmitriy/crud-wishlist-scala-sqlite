@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Wishlist</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+<h1>Wishlist</h1>
+
+  <div class="theme-switch">
+    <label for="switch">
+        <input type="checkbox" id="switch">
+      <div class="slider"></div>
+    </label>
+  </div>
+
+<div class="button-container">
+    <button id="add-item-btn"><i class="fas fa-plus"></i></button>
+    <button id="edit-item-btn"><i class="fas fa-edit"></i></button>
+    <button id="delete-item-btn"><i class="fas fa-trash"></i></button>
+    <button id="refresh-item-btn"><i class="fas fa-sync"></i></button>
+</div>
+
+<table id="wishlist-table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Item 1</td>
+        <td>$100</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Item 2</td>
+        <td>$200</td>
+    </tr>
+    <!-- Add more rows as needed -->
+</table>
+<label for="link-to-order">Link to Order:</label><textarea id="link-to-order" placeholder="Link to Order"></textarea>
+<label for="description">Description:</label><textarea id="description" placeholder="Description"></textarea>
+
+<!-- Modal window for adding item -->
+<div id="item-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title">Add Item</h2>
+        <form id="item-form">
+            <label for="item-name">Name:</label>
+            <input type="text" id="item-name" required><br>
+            <label for="item-price">Price:</label>
+            <input type="text" id="item-price" required><br>
+            <label for="item-link-to-order">Link to Order:</label>
+            <textarea id="item-link-to-order"></textarea><br>
+            <label for="item-description">Description:</label>
+            <textarea id="item-description"></textarea><br>
+            <button type="submit">OK</button>
+            <button type="button" id="cancel-add-btn">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
