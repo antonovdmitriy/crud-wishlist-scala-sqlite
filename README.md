@@ -17,9 +17,6 @@
 
 To build simple scala application with rest api using akka-http and store data in embedded sqllite
 
-## How to run
-
-
 ## How it looks
 
 ![dark wish image](images/dark_wish.png)
